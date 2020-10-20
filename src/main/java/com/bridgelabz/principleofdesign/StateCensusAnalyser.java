@@ -11,7 +11,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 public class StateCensusAnalyser {
 
-	public int loadCensusData(String censusDataPath) throws AnalyserException{
+	public int loadCensusData(String censusDataPath) throws AnalyserException {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(censusDataPath));
 			CsvToBeanBuilder<StateCensus> csvToBeanBuilder = new CsvToBeanBuilder<StateCensus>(reader);
@@ -26,7 +26,9 @@ public class StateCensusAnalyser {
 			}
 			return noOfEntries;
 		} catch (IOException e) {
-			throw new AnalyserException("Invalid file location");
+			throw new AnalyserException("Invalid file location", AnalyserException.ExceptionType.INVALID_FILE_PATH);
+		} catch (IllegalStateException e) {
+			throw new AnalyserException("Incorrect class type", AnalyserException.ExceptionType.INVALID_CLASS_TYPE);
 		}
 	}
 }

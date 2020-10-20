@@ -33,4 +33,14 @@ public class StateCensusTest
 	public void givenIncorrectCSVFilePathThrowsException() throws AnalyserException {
 		stateCensusAnalyser.loadCensusData(CENSUS_DATA_INCOR);
 	}
+	
+	@Test 
+	public void givenIncorrectCSVClassTypeThrowsInvalidClassTypeException() {
+		try {
+			stateCensusAnalyser.loadCensusData(CENSUS_DATA);
+		} catch (AnalyserException e) {
+			System.out.println(e.getMessage());
+			assertEquals(AnalyserException.ExceptionType.INVALID_CLASS_TYPE, e.type);
+		}
+	}
 } 
