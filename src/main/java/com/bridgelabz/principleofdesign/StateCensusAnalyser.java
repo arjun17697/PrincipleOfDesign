@@ -7,8 +7,12 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.List;
 
-import com.bridgelabz.principleofdesign.AnalyserException.ExceptionType;
+import com.bridgelabz.principleofdesign.service.AnalyserException;
+import com.bridgelabz.principleofdesign.service.CSVBuilderFactory;
+import com.bridgelabz.principleofdesign.service.ICSVBuilder;
+import com.bridgelabz.principleofdesign.service.AnalyserException.ExceptionType;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvException;
@@ -18,13 +22,12 @@ public class StateCensusAnalyser {
 	public int loadCensusData(String censusDataPath) throws AnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(censusDataPath));) {
 			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			Iterator<StateCensus> censusIterator = null;
+			List<StateCensus> censusList = null;
 			try {
-				censusIterator = csvBuilder.getCSVFileIterator(reader, StateCensus.class);
+				censusList = csvBuilder.getCSVFileList(reader, StateCensus.class);
 			} catch (CsvException e) {
 				throw new AnalyserException("Invalid Class Type", ExceptionType.INVALID_CLASS_TYPE);
 			}
-			int noOfEntries = this.getCount(censusIterator);
 			BufferedReader br = new BufferedReader(new FileReader(censusDataPath));
 			String line = "";
 			int flag = 0;
@@ -39,7 +42,7 @@ public class StateCensusAnalyser {
 					flag++;
 				}
 				br.close();
-				return noOfEntries;
+				return censusList.size();
 			}
 		} catch (IOException e) {
 			throw new AnalyserException("Invalid file location", ExceptionType.INVALID_FILE_PATH);
@@ -53,13 +56,12 @@ public class StateCensusAnalyser {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(codeDataPath));
 			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			Iterator<StateCode> censusIterator = null;
+			List<StateCode> censusList = null;
 			try {
-				censusIterator = csvBuilder.getCSVFileIterator(reader, StateCode.class);
+				censusList = csvBuilder.getCSVFileList(reader, StateCode.class);
 			} catch (CsvException e) {
 				throw new AnalyserException("Invalid Class Type", ExceptionType.INVALID_CLASS_TYPE);
 			}
-			int noOfEntries = this.getCount(censusIterator);
 			BufferedReader br = new BufferedReader(new FileReader(codeDataPath));
 			String line = "";
 			int flag = 0;
@@ -74,7 +76,7 @@ public class StateCensusAnalyser {
 					flag++;
 				}
 				br.close();
-				return noOfEntries;
+				return censusList.size();
 			}
 		} catch (IOException e) {
 			throw new AnalyserException("Invalid file location", ExceptionType.INVALID_FILE_PATH);

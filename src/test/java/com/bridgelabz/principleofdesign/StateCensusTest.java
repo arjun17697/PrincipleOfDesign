@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bridgelabz.principleofdesign.service.AnalyserException;
+
 /**
  * Unit test for simple App.
  */

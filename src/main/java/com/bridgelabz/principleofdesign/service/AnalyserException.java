@@ -1,4 +1,4 @@
-package com.bridgelabz.principleofdesign;
+package com.bridgelabz.principleofdesign.service;
 
 public class AnalyserException extends Exception {
 
