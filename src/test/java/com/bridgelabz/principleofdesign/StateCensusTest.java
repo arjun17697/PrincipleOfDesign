@@ -19,6 +19,7 @@ public class StateCensusTest
 	private static final String CENSUS_DATA_DELIMITER = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusDataDelimiter.csv";;
 	private static final String CENSUS_DATA_HEADER = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusDataHeader.csv";;
 	private static final String CODE_DATA = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCode.csv";
+	private static final String CODE_DATA_INCOR = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCodeiNCOR.csv";;
 	
 	private StateCensusAnalyser stateCensusAnalyser;
 
@@ -69,5 +70,14 @@ public class StateCensusTest
 	public void givenCodeCSVFile_ReturnsCorrectNoOfEntries() throws AnalyserException {
 		int noOfEntries = stateCensusAnalyser.loadCodeData(CODE_DATA);
 		assertEquals(37, noOfEntries);
+	}
+	@Test
+	public void givenIncorrectCSVCodeFilePath_ThrowsCustomException(){
+		try {
+			stateCensusAnalyser.loadCensusData(CODE_DATA_INCOR);
+		} catch (AnalyserException e) {
+			System.out.println(e.getMessage());
+			assertEquals(AnalyserException.ExceptionType.INVALID_FILE_PATH, e.type);
+		}
 	}
 } 
