@@ -50,8 +50,8 @@ public class StateCensusAnalyser {
 		}
 		return 0;
 	}
-	
-	public int loadCodeData(String codeDataPath) {
+
+	public int loadCodeData(String codeDataPath) throws AnalyserException {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(codeDataPath));
 			CsvToBeanBuilder<StateCode> csvToBeanBuilder = new CsvToBeanBuilder<StateCode>(reader);
@@ -66,9 +66,11 @@ public class StateCensusAnalyser {
 				System.out.println(codeData);
 			}
 			return noOfEntries;
+
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new AnalyserException("Invalid file location", AnalyserException.ExceptionType.INVALID_FILE_PATH);
+		} catch (IllegalStateException e) {
+			throw new AnalyserException("Incorrect class type", AnalyserException.ExceptionType.INVALID_CLASS_TYPE);
 		}
-		return 0;
 	}
 }

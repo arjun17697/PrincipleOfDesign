@@ -74,10 +74,20 @@ public class StateCensusTest
 	@Test
 	public void givenIncorrectCSVCodeFilePath_ThrowsCustomException(){
 		try {
-			stateCensusAnalyser.loadCensusData(CODE_DATA_INCOR);
+			stateCensusAnalyser.loadCodeData(CODE_DATA_INCOR);
 		} catch (AnalyserException e) {
 			System.out.println(e.getMessage());
 			assertEquals(AnalyserException.ExceptionType.INVALID_FILE_PATH, e.type);
+		}
+	}
+	
+	@Test 
+	public void givenIncorrectCodeCSVClassTypeThrowsInvalidClassTypeException() {
+		try {
+			stateCensusAnalyser.loadCodeData(CODE_DATA);
+		} catch (AnalyserException e) {
+			System.out.println(e.getMessage());
+			assertEquals(AnalyserException.ExceptionType.INVALID_CLASS_TYPE, e.type);
 		}
 	}
 } 
