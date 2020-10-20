@@ -6,6 +6,30 @@ import com.opencsv.bean.CsvBindByName;
 
 public class StateCensus {
 
+	public long getPopulation() {
+		return population;
+	}
+
+	public void setPopulation(long population) {
+		this.population = population;
+	}
+
+	public int getArea() {
+		return area;
+	}
+
+	public void setArea(int area) {
+		this.area = area;
+	}
+
+	public int getDensity() {
+		return density;
+	}
+
+	public void setDensity(int density) {
+		this.density = density;
+	}
+
 	@CsvBindByName (column = "State")
 	private String stateName;
 

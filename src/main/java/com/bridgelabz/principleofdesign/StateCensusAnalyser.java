@@ -115,4 +115,11 @@ public class StateCensusAnalyser {
 		Collections.sort(codeList, Comparator.comparing(StateCode::getStateCode));
 		return new Gson().toJson(codeList);
 	}
+	public String sortCensusDataByPopulation(String csvFilePath) throws AnalyserException  {
+		loadCensusData(csvFilePath);
+		Comparator hash=Comparator.comparing(StateCensus::getPopulation);
+		Collections.sort(censusList,hash);
+		Collections.reverse(censusList);
+		return new Gson().toJson(censusList);
+	}
 }

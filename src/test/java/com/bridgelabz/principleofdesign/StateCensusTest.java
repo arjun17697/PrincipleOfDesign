@@ -137,4 +137,12 @@ public class StateCensusTest {
 		assertEquals("AD", csvStateCode[0].getStateCode());
 		assertEquals("WB", csvStateCode[csvStateCode.length - 1].getStateCode());
 	}
+	@Test
+	public void givenStateCensusCSVFile_WhenSortedOnPopulation_ShouldReturnSortedResult() throws AnalyserException {
+		String sortedCensusDataByPopulation = stateCensusAnalyser
+				.sortCensusDataByPopulation(CENSUS_DATA);
+		StateCensus[] csvStateCensus = new Gson().fromJson(sortedCensusDataByPopulation, StateCensus[].class);
+		assertEquals("Uttar Pradesh", csvStateCensus[0].getStateName());
+		assertEquals("Sikkim", csvStateCensus[csvStateCensus.length - 1].getStateName());
+	}
 }
