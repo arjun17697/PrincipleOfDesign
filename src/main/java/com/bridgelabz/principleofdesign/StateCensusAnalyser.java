@@ -50,4 +50,25 @@ public class StateCensusAnalyser {
 		}
 		return 0;
 	}
+	
+	public int loadCodeData(String codeDataPath) {
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(codeDataPath));
+			CsvToBeanBuilder<StateCode> csvToBeanBuilder = new CsvToBeanBuilder<StateCode>(reader);
+			csvToBeanBuilder.withType(StateCode.class);
+			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+			CsvToBean<StateCode> csvToBean = csvToBeanBuilder.build();
+			Iterator<StateCode> censusIterator = csvToBean.iterator();
+			int noOfEntries = 0;
+			while (censusIterator.hasNext()) {
+				noOfEntries++;
+				StateCode codeData = censusIterator.next();
+				System.out.println(codeData);
+			}
+			return noOfEntries;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

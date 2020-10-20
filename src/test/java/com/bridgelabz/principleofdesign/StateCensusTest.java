@@ -18,6 +18,8 @@ public class StateCensusTest
 	private static final String CENSUS_DATA_INCOR = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusDataRANDOM.csv";;
 	private static final String CENSUS_DATA_DELIMITER = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusDataDelimiter.csv";;
 	private static final String CENSUS_DATA_HEADER = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusDataHeader.csv";;
+	private static final String CODE_DATA = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCode.csv";
+	
 	private StateCensusAnalyser stateCensusAnalyser;
 
 	@Before
@@ -46,7 +48,7 @@ public class StateCensusTest
 		}
 	}
 	@Test
-	public void givenIncorrectDelimiter_ThrowsCustomException(){
+	public void givenIncorrectDelimiterThrowsCustomException(){
 		try {
 			System.out.println(stateCensusAnalyser.loadCensusData(CENSUS_DATA_DELIMITER));
 		} catch (AnalyserException e) {
@@ -55,12 +57,17 @@ public class StateCensusTest
 		}
 	}
 	@Test
-	public void givenIncorrectHeader_ThrowsCustomExceptionOfTypeInvalidHeader(){
+	public void givenIncorrectHeaderThrowsInvalidHeaderException(){
 		try {
 			System.out.println(stateCensusAnalyser.loadCensusData(CENSUS_DATA_HEADER));
 		} catch (AnalyserException e) {
 			System.out.println(e.getMessage());
 			assertEquals(AnalyserException.ExceptionType.INVALID_HEADER, e.type);
 		}
+	}
+	@Test
+	public void givenCodeCSVFile_ReturnsCorrectNoOfEntries() throws AnalyserException {
+		int noOfEntries = stateCensusAnalyser.loadCodeData(CODE_DATA);
+		assertEquals(37, noOfEntries);
 	}
 } 
