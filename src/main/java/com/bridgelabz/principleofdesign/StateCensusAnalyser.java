@@ -17,12 +17,14 @@ public class StateCensusAnalyser {
 	public int loadCensusData(String censusDataPath) throws AnalyserException {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(censusDataPath));
-			CsvToBeanBuilder<StateCensus> csvToBeanBuilder = new CsvToBeanBuilder<StateCensus>(reader);
-			csvToBeanBuilder.withType(StateCensus.class);
-			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
-			CsvToBean<StateCensus> csvToBean = csvToBeanBuilder.build();
+			Iterator<StateCensus> censusIterator = this.getCSVFileIterator(reader, StateCensus.class);
 			BufferedReader br = new BufferedReader(new FileReader(censusDataPath));
 			String line = "";
+			int noOfEntries = 0;
+			while (censusIterator.hasNext()) {
+				noOfEntries++;
+				StateCensus censusData = censusIterator.next();
+			}
 			int flag = 0;
 			while ((line = br.readLine()) != null) {
 				if (!line.contains(","))
@@ -35,12 +37,6 @@ public class StateCensusAnalyser {
 					flag++;
 				}
 				br.close();
-				Iterator<StateCensus> censusIterator = csvToBean.iterator();
-				int noOfEntries = 0;
-				while (censusIterator.hasNext()) {
-					noOfEntries++;
-					StateCensus censusData = censusIterator.next();
-				}
 				return noOfEntries;
 			}
 		} catch (IOException e) {
@@ -54,15 +50,11 @@ public class StateCensusAnalyser {
 	public int loadCodeData(String codeDataPath) throws AnalyserException {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(codeDataPath));
-			CsvToBeanBuilder<StateCode> csvToBeanBuilder = new CsvToBeanBuilder<StateCode>(reader);
-			csvToBeanBuilder.withType(StateCode.class);
-			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
-			CsvToBean<StateCode> csvToBean = csvToBeanBuilder.build();
-			Iterator<StateCode> censusIterator = csvToBean.iterator();
+			Iterator<StateCode> codeIterator = this.getCSVFileIterator(reader, StateCode.class);
 			int noOfEntries = 0;
-			while (censusIterator.hasNext()) {
+			while (codeIterator.hasNext()) {
 				noOfEntries++;
-				StateCode codeData = censusIterator.next();
+				StateCode codeData = codeIterator.next();
 				System.out.println(codeData);
 			}
 			BufferedReader br = new BufferedReader(new FileReader(codeDataPath));
@@ -80,16 +72,25 @@ public class StateCensusAnalyser {
 								AnalyserException.ExceptionType.INVALID_HEADER);
 					flag++;
 				}
-
 				br.close();
 				return noOfEntries;
-
-			}
-		} catch (IOException e) {
+		} }catch (IOException e) {
 			throw new AnalyserException("Invalid file location", AnalyserException.ExceptionType.INVALID_FILE_PATH);
 		} catch (IllegalStateException e) {
 			throw new AnalyserException("Incorrect class type", AnalyserException.ExceptionType.INVALID_CLASS_TYPE);
 		}
 		return 0;
+	}
+
+	private <E> Iterator<E> getCSVFileIterator(Reader reader, Class<E> csvClass) throws AnalyserException {
+		try {
+			CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
+			csvToBeanBuilder.withType(csvClass);
+			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+			CsvToBean<E> csvToBean = csvToBeanBuilder.build();
+			return csvToBean.iterator();
+		} catch (IllegalStateException e) {
+			throw new AnalyserException(e.getMessage(), AnalyserException.ExceptionType.INVALID_FILE_PATH);
+		}
 	}
 }
