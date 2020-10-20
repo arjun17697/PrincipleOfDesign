@@ -20,8 +20,16 @@ public class StateCensus {
 
 	@Override
 	public String toString() {
-		return "IndiaStateCensus [stateName=" + stateName + ", population=" + population + ", area=" + area
+		return "IndiaStateCensus [stateName=" + getStateName() + ", population=" + population + ", area=" + area
 				+ ", density=" + density + "]";
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
 	}
 
 } 

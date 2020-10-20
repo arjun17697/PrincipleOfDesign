@@ -3,10 +3,15 @@ package com.bridgelabz.principleofdesign;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.bridgelabz.principleofdesign.service.AnalyserException;
+import com.google.gson.Gson;
+
+import junit.framework.Assert;
 
 /**
  * Unit test for simple App.
@@ -116,5 +121,12 @@ public class StateCensusTest {
 			System.out.println(e.getMessage());
 			assertEquals(AnalyserException.ExceptionType.INVALID_HEADER, e.type);
 		}
+	}
+	
+	@Test
+	public void givenIndianCensusDataWhenSortedOnStateShouldReturnSortedResult() throws AnalyserException, IOException {
+		String sortedCensusData= stateCensusAnalyser.sortCensusDataByState(CENSUS_DATA);
+		StateCensus[] censusCSV=new Gson().fromJson(sortedCensusData,StateCensus[].class);		
+		Assert.assertEquals("Andhra Pradesh", censusCSV[0].getStateName());
 	}
 }

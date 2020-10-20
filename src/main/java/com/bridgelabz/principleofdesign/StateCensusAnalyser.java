@@ -6,25 +6,34 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.*;
 
 import com.bridgelabz.principleofdesign.service.AnalyserException;
 import com.bridgelabz.principleofdesign.service.CSVBuilderFactory;
 import com.bridgelabz.principleofdesign.service.ICSVBuilder;
+import com.google.gson.Gson;
 import com.bridgelabz.principleofdesign.service.AnalyserException.ExceptionType;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvException;
 
 public class StateCensusAnalyser {
+	private List<StateCensus> censusList;
 
 	public int loadCensusData(String censusDataPath) throws AnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(censusDataPath));) {
 			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			List<StateCensus> censusList = null;
+			//List<StateCensus> censusList = null;
 			try {
-				censusList = csvBuilder.getCSVFileList(reader, StateCensus.class);
+				censusList = CSVBuilderFactory.createCSVBuilder().getCSVFileList(reader, StateCensus.class);
+				//censusList = csvBuilder.getCSVFileList(reader, StateCensus.class);
 			} catch (CsvException e) {
 				throw new AnalyserException("Invalid Class Type", ExceptionType.INVALID_CLASS_TYPE);
 			}
@@ -93,5 +102,12 @@ public class StateCensusAnalyser {
 			E censusData = iterator.next();
 		}
 		return noOfEntries;
+	}
+
+	public String sortCensusDataByState(String censusDataPath) throws AnalyserException  {
+		loadCensusData(censusDataPath);
+		Comparator hash = Comparator.comparing(StateCensus::getStateName);
+		Collections.sort(censusList,hash);
+		return new Gson().toJson(censusList);
 	}
 }
