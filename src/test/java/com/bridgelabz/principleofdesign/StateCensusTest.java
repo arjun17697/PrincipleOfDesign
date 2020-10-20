@@ -20,6 +20,7 @@ public class StateCensusTest {
 	private static final String CODE_DATA = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCode.csv";
 	private static final String CODE_DATA_INCOR = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCodeiNCOR.csv";
 	private static final String CODE_DATA_DELIMITER = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCodeDelimiter.csv";
+	private static final String CODE_DATA_HEADER = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCodeHeader.csv";;
 
 	private StateCensusAnalyser stateCensusAnalyser;
 
@@ -102,6 +103,16 @@ public class StateCensusTest {
 		} catch (AnalyserException e) {
 			System.out.println(e.getMessage());
 			assertEquals(AnalyserException.ExceptionType.INVALID_DELIMITER, e.type);
+		}
+	}
+	
+	@Test
+	public void givenIncorrectCodeHeaderThrowsInvalidHeaderException() {
+		try {
+			System.out.println(stateCensusAnalyser.loadCensusData(CODE_DATA_HEADER));
+		} catch (AnalyserException e) {
+			System.out.println(e.getMessage());
+			assertEquals(AnalyserException.ExceptionType.INVALID_HEADER, e.type);
 		}
 	}
 }

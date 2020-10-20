@@ -67,18 +67,29 @@ public class StateCensusAnalyser {
 			}
 			BufferedReader br = new BufferedReader(new FileReader(codeDataPath));
 			String line = "";
+			int flag = 0;
 			while ((line = br.readLine()) != null) {
 				if (!line.contains(","))
 					throw new AnalyserException("Invalid delimiter For Code Data",
 							AnalyserException.ExceptionType.INVALID_DELIMITER);
-			}
-			br.close();
-			return noOfEntries;
+				if (flag == 0) {
+					String[] headers = line.split(",");
+					if (!(headers[0].equals("SrNo") && headers[1].equals("State Name") && headers[2].equals("TIN")
+							&& headers[3].equals("StateCode")))
+						throw new AnalyserException("Invalid header(s) For Code Data",
+								AnalyserException.ExceptionType.INVALID_HEADER);
+					flag++;
+				}
 
+				br.close();
+				return noOfEntries;
+
+			}
 		} catch (IOException e) {
 			throw new AnalyserException("Invalid file location", AnalyserException.ExceptionType.INVALID_FILE_PATH);
 		} catch (IllegalStateException e) {
 			throw new AnalyserException("Incorrect class type", AnalyserException.ExceptionType.INVALID_CLASS_TYPE);
 		}
+		return 0;
 	}
 }
