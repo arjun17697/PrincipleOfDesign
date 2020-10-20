@@ -1,5 +1,7 @@
 package com.bridgelabz.principleofdesign;
+
 import com.opencsv.bean.CsvBindByName;
+
 public class StateCode {
 	@CsvBindByName(column = "SrNo")
 	private int serialNo;
@@ -12,6 +14,12 @@ public class StateCode {
 
 	@CsvBindByName(column = "StateCode")
 	private String stateCode;
+
+	@Override
+	public String toString() {
+		return "StateCode [serialNo=" + serialNo + ", stateName=" + stateName + ", tin=" + tin + ", stateCode="
+				+ stateCode + "]";
+	}
 
 	public int getSerialNo() {
 		return serialNo;
@@ -44,10 +52,4 @@ public class StateCode {
 	public void setStateCode(String stateCode) {
 		this.stateCode = stateCode;
 	}
-
-	@Override
-	public String toString() {
-		return "StateCode [serialNo=" + serialNo + ", stateName=" + stateName + ", tin=" + tin + ", stateCode="
-				+ stateCode + "]";
-	}
-} 
+}

@@ -33,7 +33,7 @@ public class StateCensusAnalyser {
 			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
 			try {
 				censusList = CSVBuilderFactory.createCSVBuilder().getCSVFileList(reader, StateCensus.class);
-				//censusList = csvBuilder.getCSVFileList(reader, StateCensus.class);
+				// censusList = csvBuilder.getCSVFileList(reader, StateCensus.class);
 			} catch (CsvException e) {
 				throw new AnalyserException("Invalid Class Type", ExceptionType.INVALID_CLASS_TYPE);
 			}
@@ -103,30 +103,37 @@ public class StateCensusAnalyser {
 		return noOfEntries;
 	}
 
-	public String sortCensusDataByState(String censusDataPath) throws AnalyserException  {
+	public String sortCensusDataByState(String censusDataPath) throws AnalyserException {
 		loadCensusData(censusDataPath);
 		Comparator hash = Comparator.comparing(StateCensus::getStateName);
-		Collections.sort(censusList,hash);
+		Collections.sort(censusList, hash);
 		return new Gson().toJson(censusList);
 	}
-	
+
 	public String sortStateCodeDataByStateCode(String csvFilePath) throws AnalyserException {
 		loadCodeData(csvFilePath);
 		Collections.sort(codeList, Comparator.comparing(StateCode::getStateCode));
 		return new Gson().toJson(codeList);
 	}
-	public String sortCensusDataByPopulation(String csvFilePath) throws AnalyserException  {
+
+	public String sortCensusDataByPopulation(String csvFilePath) throws AnalyserException {
 		loadCensusData(csvFilePath);
-		Comparator hash=Comparator.comparing(StateCensus::getPopulation);
-		Collections.sort(censusList,hash);
+		Comparator hash = Comparator.comparing(StateCensus::getPopulation);
+		Collections.sort(censusList, hash);
 		Collections.reverse(censusList);
 		return new Gson().toJson(censusList);
 	}
-	
+
 	public String sortCensusDataByPopulationDensity(String csvFilePath) throws AnalyserException {
-		loadCodeData(csvFilePath); 
 		loadCensusData(csvFilePath);
 		Collections.sort(censusList, Comparator.comparing(StateCensus::getDensity));
+		Collections.reverse(censusList);
+		return new Gson().toJson(censusList);
+	}
+
+	public String sortCensusDataByArea(String csvFilePath) throws AnalyserException {
+		loadCensusData(csvFilePath);
+		Collections.sort(censusList, Comparator.comparing(StateCensus::getArea));
 		Collections.reverse(censusList);
 		return new Gson().toJson(censusList);
 	}
