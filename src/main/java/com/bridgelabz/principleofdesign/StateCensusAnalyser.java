@@ -11,7 +11,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 public class StateCensusAnalyser {
 
-	public int loadCensusData(String censusDataPath) {
+	public int loadCensusData(String censusDataPath) throws AnalyserException{
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(censusDataPath));
 			CsvToBeanBuilder<StateCensus> csvToBeanBuilder = new CsvToBeanBuilder<StateCensus>(reader);
@@ -26,13 +26,7 @@ public class StateCensusAnalyser {
 			}
 			return noOfEntries;
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new AnalyserException("Invalid file location");
 		}
-		return 0;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(new StateCensusAnalyser().loadCensusData(
-				"C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusData.csv"));
 	}
 }

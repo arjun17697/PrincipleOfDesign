@@ -15,6 +15,7 @@ public class StateCensusTest
      * Rigorous Test :-)
      */
 	private static final String CENSUS_DATA = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusData.csv";
+	private static final String CENSUS_DATA_INCOR = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusDataRANDOM.csv";;
 	private StateCensusAnalyser stateCensusAnalyser;
 
 	@Before
@@ -23,8 +24,13 @@ public class StateCensusTest
 	}
 
 	@Test
-	public void givenCensusCSVFile_ReturnsCorrectNoOfEntries() {
+	public void givenCensusCSVFileCheckNoOfEntries() throws AnalyserException {
 		int noOfEntries = stateCensusAnalyser.loadCensusData(CENSUS_DATA);
 		assertEquals(29, noOfEntries);
+	}
+	
+	@Test(expected = AnalyserException.class)
+	public void givenIncorrectCSVFilePathThrowsException() throws AnalyserException {
+		stateCensusAnalyser.loadCensusData(CENSUS_DATA_INCOR);
 	}
 } 
