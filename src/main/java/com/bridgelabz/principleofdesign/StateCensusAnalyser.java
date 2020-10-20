@@ -122,4 +122,12 @@ public class StateCensusAnalyser {
 		Collections.reverse(censusList);
 		return new Gson().toJson(censusList);
 	}
+	
+	public String sortCensusDataByPopulationDensity(String csvFilePath) throws AnalyserException {
+		loadCodeData(csvFilePath); 
+		loadCensusData(csvFilePath);
+		Collections.sort(censusList, Comparator.comparing(StateCensus::getDensity));
+		Collections.reverse(censusList);
+		return new Gson().toJson(censusList);
+	}
 }
