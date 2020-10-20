@@ -17,7 +17,8 @@ public class StateCensusAnalyser {
 	public int loadCensusData(String censusDataPath) throws AnalyserException {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(censusDataPath));
-			Iterator<StateCensus> censusIterator = new OpenCSVBuilder().getCSVFileIterator(reader, StateCensus.class);
+			ICSVBuilder csvBuilder=CSVBuilderFactory.createCSVBuilder();
+			Iterator<StateCensus> censusIterator =csvBuilder.getCSVFileIterator(reader, StateCensus.class);
 			int noOfEntries = this.getCount(censusIterator);
 			BufferedReader br = new BufferedReader(new FileReader(censusDataPath));
 			String line = "";
@@ -46,7 +47,8 @@ public class StateCensusAnalyser {
 	public int loadCodeData(String codeDataPath) throws AnalyserException {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(codeDataPath));
-			Iterator<StateCode> censusIterator = new OpenCSVBuilder().getCSVFileIterator(reader, StateCode.class);
+			ICSVBuilder csvBuilder=CSVBuilderFactory.createCSVBuilder();
+			Iterator<StateCode> censusIterator = csvBuilder.getCSVFileIterator(reader, StateCode.class);
 			int noOfEntries = this.getCount(censusIterator);
 			BufferedReader br = new BufferedReader(new FileReader(codeDataPath));
 			String line = "";
