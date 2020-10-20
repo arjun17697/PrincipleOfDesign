@@ -9,18 +9,18 @@ import org.junit.Test;
 /**
  * Unit test for simple App.
  */
-public class StateCensusTest 
-{
-    /**
-     * Rigorous Test :-)
-     */
+public class StateCensusTest {
+	/**
+	 * Rigorous Test :-)
+	 */
 	private static final String CENSUS_DATA = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusData.csv";
 	private static final String CENSUS_DATA_INCOR = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusDataRANDOM.csv";;
 	private static final String CENSUS_DATA_DELIMITER = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusDataDelimiter.csv";;
 	private static final String CENSUS_DATA_HEADER = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCensusDataHeader.csv";;
 	private static final String CODE_DATA = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCode.csv";
-	private static final String CODE_DATA_INCOR = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCodeiNCOR.csv";;
-	
+	private static final String CODE_DATA_INCOR = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCodeiNCOR.csv";
+	private static final String CODE_DATA_DELIMITER = "C:\\Users\\HP LAP\\Desktop\\BridgeLabz\\SoftwareDesignPrinciples\\designprinciples\\src\\Resources\\IndiaStateCodeDelimiter.csv";
+
 	private StateCensusAnalyser stateCensusAnalyser;
 
 	@Before
@@ -33,13 +33,13 @@ public class StateCensusTest
 		int noOfEntries = stateCensusAnalyser.loadCensusData(CENSUS_DATA);
 		assertEquals(29, noOfEntries);
 	}
-	
+
 	@Test(expected = AnalyserException.class)
 	public void givenIncorrectCSVFilePathThrowsException() throws AnalyserException {
 		stateCensusAnalyser.loadCensusData(CENSUS_DATA_INCOR);
 	}
-	
-	@Test 
+
+	@Test
 	public void givenIncorrectCSVClassTypeThrowsInvalidClassTypeException() {
 		try {
 			stateCensusAnalyser.loadCensusData(CENSUS_DATA);
@@ -48,8 +48,9 @@ public class StateCensusTest
 			assertEquals(AnalyserException.ExceptionType.INVALID_CLASS_TYPE, e.type);
 		}
 	}
+
 	@Test
-	public void givenIncorrectDelimiterThrowsCustomException(){
+	public void givenIncorrectDelimiterThrowsCustomException() {
 		try {
 			System.out.println(stateCensusAnalyser.loadCensusData(CENSUS_DATA_DELIMITER));
 		} catch (AnalyserException e) {
@@ -57,8 +58,9 @@ public class StateCensusTest
 			assertEquals(AnalyserException.ExceptionType.INVALID_DELIMITER, e.type);
 		}
 	}
+
 	@Test
-	public void givenIncorrectHeaderThrowsInvalidHeaderException(){
+	public void givenIncorrectHeaderThrowsInvalidHeaderException() {
 		try {
 			System.out.println(stateCensusAnalyser.loadCensusData(CENSUS_DATA_HEADER));
 		} catch (AnalyserException e) {
@@ -66,13 +68,15 @@ public class StateCensusTest
 			assertEquals(AnalyserException.ExceptionType.INVALID_HEADER, e.type);
 		}
 	}
+
 	@Test
 	public void givenCodeCSVFile_ReturnsCorrectNoOfEntries() throws AnalyserException {
 		int noOfEntries = stateCensusAnalyser.loadCodeData(CODE_DATA);
 		assertEquals(37, noOfEntries);
 	}
+
 	@Test
-	public void givenIncorrectCSVCodeFilePath_ThrowsCustomException(){
+	public void givenIncorrectCSVCodeFilePath_ThrowsCustomException() {
 		try {
 			stateCensusAnalyser.loadCodeData(CODE_DATA_INCOR);
 		} catch (AnalyserException e) {
@@ -80,8 +84,8 @@ public class StateCensusTest
 			assertEquals(AnalyserException.ExceptionType.INVALID_FILE_PATH, e.type);
 		}
 	}
-	
-	@Test 
+
+	@Test
 	public void givenIncorrectCodeCSVClassTypeThrowsInvalidClassTypeException() {
 		try {
 			stateCensusAnalyser.loadCodeData(CODE_DATA);
@@ -90,4 +94,14 @@ public class StateCensusTest
 			assertEquals(AnalyserException.ExceptionType.INVALID_CLASS_TYPE, e.type);
 		}
 	}
-} 
+
+	@Test
+	public void givenIncorrectStateCodeCSVDelimiter_ThrowsCodeAnalyserExceptionOfTypeInvalidDelimiter() {
+		try {
+			stateCensusAnalyser.loadCodeData(CODE_DATA_DELIMITER);
+		} catch (AnalyserException e) {
+			System.out.println(e.getMessage());
+			assertEquals(AnalyserException.ExceptionType.INVALID_DELIMITER, e.type);
+		}
+	}
+}

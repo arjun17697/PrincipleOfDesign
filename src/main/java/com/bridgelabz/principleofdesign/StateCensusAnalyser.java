@@ -65,6 +65,14 @@ public class StateCensusAnalyser {
 				StateCode codeData = censusIterator.next();
 				System.out.println(codeData);
 			}
+			BufferedReader br = new BufferedReader(new FileReader(codeDataPath));
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				if (!line.contains(","))
+					throw new AnalyserException("Invalid delimiter For Code Data",
+							AnalyserException.ExceptionType.INVALID_DELIMITER);
+			}
+			br.close();
 			return noOfEntries;
 
 		} catch (IOException e) {
