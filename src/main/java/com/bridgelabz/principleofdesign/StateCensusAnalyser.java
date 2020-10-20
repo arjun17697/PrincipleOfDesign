@@ -18,13 +18,9 @@ public class StateCensusAnalyser {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(censusDataPath));
 			Iterator<StateCensus> censusIterator = this.getCSVFileIterator(reader, StateCensus.class);
+			int noOfEntries = this.getCount(censusIterator);
 			BufferedReader br = new BufferedReader(new FileReader(censusDataPath));
 			String line = "";
-			int noOfEntries = 0;
-			while (censusIterator.hasNext()) {
-				noOfEntries++;
-				StateCensus censusData = censusIterator.next();
-			}
 			int flag = 0;
 			while ((line = br.readLine()) != null) {
 				if (!line.contains(","))
@@ -51,12 +47,8 @@ public class StateCensusAnalyser {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(codeDataPath));
 			Iterator<StateCode> codeIterator = this.getCSVFileIterator(reader, StateCode.class);
-			int noOfEntries = 0;
-			while (codeIterator.hasNext()) {
-				noOfEntries++;
-				StateCode codeData = codeIterator.next();
-				System.out.println(codeData);
-			}
+			Iterator<StateCode> censusIterator = this.getCSVFileIterator(reader, StateCode.class);
+			int noOfEntries = this.getCount(censusIterator);
 			BufferedReader br = new BufferedReader(new FileReader(codeDataPath));
 			String line = "";
 			int flag = 0;
@@ -92,5 +84,14 @@ public class StateCensusAnalyser {
 		} catch (IllegalStateException e) {
 			throw new AnalyserException(e.getMessage(), AnalyserException.ExceptionType.INVALID_FILE_PATH);
 		}
+	}
+	
+	private <E> int getCount(Iterator<E> iterator) {
+		int noOfEntries = 0;
+		while (iterator.hasNext()) {
+			noOfEntries++;
+			E censusData = iterator.next();
+		}
+		return noOfEntries;
 	}
 }
