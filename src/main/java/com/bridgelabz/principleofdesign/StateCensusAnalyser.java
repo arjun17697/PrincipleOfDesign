@@ -1,11 +1,14 @@
 package com.bridgelabz.principleofdesign;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
+import com.bridgelabz.principleofdesign.AnalyserException.ExceptionType;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -18,6 +21,13 @@ public class StateCensusAnalyser {
 			csvToBeanBuilder.withType(StateCensus.class);
 			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
 			CsvToBean<StateCensus> csvToBean = csvToBeanBuilder.build();
+			BufferedReader br = new BufferedReader(new FileReader(censusDataPath)); 
+			String line = "";
+	            while ((line = br.readLine()) != null) {
+	            	if(!line.contains(","))
+	            		throw new AnalyserException("Invalid delimiter", ExceptionType.INVALID_DELIMITER);
+	            }
+			br.close();
 			Iterator<StateCensus> censusIterator = csvToBean.iterator();
 			int noOfEntries = 0;
 			while (censusIterator.hasNext()) {
