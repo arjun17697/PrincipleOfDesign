@@ -26,11 +26,11 @@ import com.opencsv.exceptions.CsvException;
 
 public class StateCensusAnalyser {
 	private List<StateCensus> censusList;
+	private List<StateCode> codeList;
 
 	public int loadCensusData(String censusDataPath) throws AnalyserException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(censusDataPath));) {
 			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			//List<StateCensus> censusList = null;
 			try {
 				censusList = CSVBuilderFactory.createCSVBuilder().getCSVFileList(reader, StateCensus.class);
 				//censusList = csvBuilder.getCSVFileList(reader, StateCensus.class);
@@ -65,9 +65,8 @@ public class StateCensusAnalyser {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(codeDataPath));
 			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			List<StateCode> censusList = null;
 			try {
-				censusList = csvBuilder.getCSVFileList(reader, StateCode.class);
+				codeList = csvBuilder.getCSVFileList(reader, StateCode.class);
 			} catch (CsvException e) {
 				throw new AnalyserException("Invalid Class Type", ExceptionType.INVALID_CLASS_TYPE);
 			}
@@ -85,7 +84,7 @@ public class StateCensusAnalyser {
 					flag++;
 				}
 				br.close();
-				return censusList.size();
+				return codeList.size();
 			}
 		} catch (IOException e) {
 			throw new AnalyserException("Invalid file location", ExceptionType.INVALID_FILE_PATH);
@@ -109,5 +108,11 @@ public class StateCensusAnalyser {
 		Comparator hash = Comparator.comparing(StateCensus::getStateName);
 		Collections.sort(censusList,hash);
 		return new Gson().toJson(censusList);
+	}
+	
+	public String sortStateCodeDataByStateCode(String csvFilePath) throws AnalyserException {
+		loadCodeData(csvFilePath);
+		Collections.sort(codeList, Comparator.comparing(StateCode::getStateCode));
+		return new Gson().toJson(codeList);
 	}
 }
