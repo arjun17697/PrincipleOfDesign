@@ -3,9 +3,11 @@ package com.bridgelabz.principleofdesign;
 import java.io.Reader;
 import java.util.Iterator;
 
-public interface ICSVBuilder<E>{
+import com.opencsv.exceptions.CsvException;
+
+public interface ICSVBuilder{
 	public <E> Iterator<E> getCSVFileIterator(Reader reader, Class csvClass) 
-			throws AnalyserException;
+			throws CsvException;
 
 
 }
