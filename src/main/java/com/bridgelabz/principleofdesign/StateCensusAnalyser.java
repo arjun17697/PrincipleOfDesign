@@ -21,24 +21,33 @@ public class StateCensusAnalyser {
 			csvToBeanBuilder.withType(StateCensus.class);
 			csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
 			CsvToBean<StateCensus> csvToBean = csvToBeanBuilder.build();
-			BufferedReader br = new BufferedReader(new FileReader(censusDataPath)); 
+			BufferedReader br = new BufferedReader(new FileReader(censusDataPath));
 			String line = "";
-	            while ((line = br.readLine()) != null) {
-	            	if(!line.contains(","))
-	            		throw new AnalyserException("Invalid delimiter", ExceptionType.INVALID_DELIMITER);
-	            }
-			br.close();
-			Iterator<StateCensus> censusIterator = csvToBean.iterator();
-			int noOfEntries = 0;
-			while (censusIterator.hasNext()) {
-				noOfEntries++;
-				StateCensus censusData = censusIterator.next();
+			int flag = 0;
+			while ((line = br.readLine()) != null) {
+				if (!line.contains(","))
+					throw new AnalyserException("Invalid delimiter", ExceptionType.INVALID_DELIMITER);
+				if (flag == 0) {
+					String[] headers = line.split(",");
+					if (!(headers[0].equals("State") && headers[1].equals("Population")
+							&& headers[2].equals("AreaInSqKm") && headers[3].equals("DensityPerSqKm")))
+						throw new AnalyserException("Invalid headers", ExceptionType.INVALID_HEADER);
+					flag++;
+				}
+				br.close();
+				Iterator<StateCensus> censusIterator = csvToBean.iterator();
+				int noOfEntries = 0;
+				while (censusIterator.hasNext()) {
+					noOfEntries++;
+					StateCensus censusData = censusIterator.next();
+				}
+				return noOfEntries;
 			}
-			return noOfEntries;
 		} catch (IOException e) {
 			throw new AnalyserException("Invalid file location", AnalyserException.ExceptionType.INVALID_FILE_PATH);
 		} catch (IllegalStateException e) {
 			throw new AnalyserException("Incorrect class type", AnalyserException.ExceptionType.INVALID_CLASS_TYPE);
 		}
+		return 0;
 	}
 }
