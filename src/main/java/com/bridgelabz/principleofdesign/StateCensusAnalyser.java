@@ -15,6 +15,8 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
 
+import com.bridgelabz.principleofdesign.model.StateCensus;
+import com.bridgelabz.principleofdesign.model.StateCode;
 import com.bridgelabz.principleofdesign.service.AnalyserException;
 import com.bridgelabz.principleofdesign.service.CSVBuilderFactory;
 import com.bridgelabz.principleofdesign.service.ICSVBuilder;

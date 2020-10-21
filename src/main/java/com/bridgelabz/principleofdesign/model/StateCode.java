@@ -1,4 +1,4 @@
-package com.bridgelabz.principleofdesign;
+package com.bridgelabz.principleofdesign.model;
 
 import com.opencsv.bean.CsvBindByName;
 

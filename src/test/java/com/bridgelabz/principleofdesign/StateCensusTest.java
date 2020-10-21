@@ -8,6 +8,8 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bridgelabz.principleofdesign.model.StateCensus;
+import com.bridgelabz.principleofdesign.model.StateCode;
 import com.bridgelabz.principleofdesign.service.AnalyserException;
 import com.google.gson.Gson;
 
